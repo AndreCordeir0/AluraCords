@@ -39,7 +39,7 @@ function GlobalStyle() {
           background-position: 0 0, 0 0, 0 0;
       }
       100% {
-          background-position:-200px 400px, 300px 300px;
+          background-position:  -200px 400px, 300px 300px;
       }
   }
     
@@ -179,7 +179,7 @@ export default function PaginaInicial() {
               border: '1px solid',
               borderColor: appConfig.theme.colors.neutrals[999],
               borderRadius: '10px',
-              flex: 1,
+              flex: 1,objectfit:'cover',boxShadow:'0px 0px 22px 0px #230A49',
               minHeight: '240px',
             }}
           >
