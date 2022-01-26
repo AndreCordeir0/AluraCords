@@ -22,6 +22,8 @@ function Titulo(props) {
   );
 }
 
+
+
 // Componente React
 // function HomePage() {
 //     // JSX
@@ -93,7 +95,7 @@ const roteamento = useRouter();
             <TextField
              placeholder="Digite Aqui"
              value={username}
-            
+            required
               fullWidth
               onChange={function(event){
                 console.log('o usuario digitou',event.target.value);
@@ -146,7 +148,8 @@ const roteamento = useRouter();
                 borderRadius: '50%',
                 marginBottom: '16px',objectfit:'cover',
               }}
-              src={`https://github.com/${username}.png`}
+              src={`${username.length > 2 ? `https://github.com/${username}.png` : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTn11Rru16VFClaKhYzoL9yGLIwOEaggMpa1Q&usqp=CAU'}`}
+             
             />
             <Text
               variant="body4"
