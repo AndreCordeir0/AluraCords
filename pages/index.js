@@ -39,7 +39,7 @@ function GlobalStyle() {
           background-position: 0 0, 0 0, 0 0;
       }
       100% {
-          background-position:-1200px 800px ,-200px 400px, 300px 300px;
+          background-position:-200px 400px, 300px 300px;
       }
   }
     
@@ -103,7 +103,7 @@ export default function PaginaInicial() {
             
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           backgroundColor: appConfig.theme.colors.primary[500],
-          background: 'url(https://i.imgur.com/inbBVfG.jpg)',filter:'brightness(0.8)',
+          background: 'url(https://i.imgur.com/inbBVfG.jpg)',filter:'brightness(0.8)',zindex:'-1',
           backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundBlendMode: 'multiply',
           
         }}
