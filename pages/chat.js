@@ -1,25 +1,53 @@
 import { Box, Text, TextField, Image, Button } from '@skynexui/components';
 import React, { useState } from 'react';
 import appConfig from '../config.json';
+import { createClient } from '@supabase/supabase-js';
 
+const SUPABASE_ANON_KEY ='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzM5OTMyNCwiZXhwIjoxOTU4OTc1MzI0fQ.QfjvJuWQeiEPir5gWC3yYhk9Mf4vZ80Rp3J4Qx8WUCk'
+    const SUPABASE_URL='https://mrdvhttmouaubjuzimkm.supabase.co';
+    const supabase_Client = createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+
+    
 export default function ChatPage() {
     const [mensagem,setMensagem]= React.useState('');
     const [listaDeMensagens,setListaDeMensagens]=React.useState([]);
-    const SUPABASE_ANON_KEY ='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzM5OTMyNCwiZXhwIjoxOTU4OTc1MzI0fQ.QfjvJuWQeiEPir5gWC3yYhk9Mf4vZ80Rp3J4Qx8WUCk'
-    const SUPABASE_URL='https://mrdvhttmouaubjuzimkm.supabase.co'
+   
+    
+
+
+    React.useEffect(()=>
+   supabase_Client
+    .from('mensagens')
+    .select('*')
+    .order('id',{ ascending:false})
+    .then(({data}) =>{
+setListaDeMensagens(data)
+})
+
+    ,[]);
+   
+
 
     function handleNovaMensagem(novaMensagem){
         const mensagem = {
-            id: listaDeMensagens.length + 1,
+           // id: listaDeMensagens.length + 1,
             de: 'AndreCordeir0',
             texto: novaMensagem,
         };
 
-
-        setListaDeMensagens([
-            ...listaDeMensagens,
+        supabase_Client
+        .from('mensagens')
+        .insert([
             mensagem
+        ])
+       .then(({data}) =>{
+        setListaDeMensagens([
+            data[0],
+            ...listaDeMensagens,
+            
         ]);
+       }
+       )
         setMensagem('')  }
 
     return (
@@ -140,7 +168,7 @@ function MessageList(props) {
                 overflow: 'auto',
                 overflowX:'hidden',
                 display: 'flex',
-                flexDirection: 'column',
+                flexDirection: 'column-reverse',
                 flex: 1,
                 color: appConfig.theme.colors.neutrals["000"],
                 marginBottom: '16px',
@@ -174,7 +202,7 @@ function MessageList(props) {
                     display: 'inline-block',
                     marginRight: '8px',
                 }}
-                src={`https://github.com/AndreCordeir0.png`}
+                src={`https://github.com/${mensagem.de}.png`}
             />
             <Text tag="strong"  styleSheet={{
                  position:'relative',
