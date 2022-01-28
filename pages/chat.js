@@ -1,12 +1,27 @@
 import { Box, Text, TextField, Image, Button } from '@skynexui/components';
-import React from 'react';
+import React, { useState } from 'react';
 import appConfig from '../config.json';
 
 export default function ChatPage() {
-    // Sua lógica vai aqui
+    const [mensagem,setMensagem]= React.useState('');
+    const [listaDeMensagens,setListaDeMensagens]=React.useState([]);
+    const SUPABASE_ANON_KEY ='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzM5OTMyNCwiZXhwIjoxOTU4OTc1MzI0fQ.QfjvJuWQeiEPir5gWC3yYhk9Mf4vZ80Rp3J4Qx8WUCk'
+    const SUPABASE_URL='https://mrdvhttmouaubjuzimkm.supabase.co'
 
-    // ./Sua lógica vai aqui
- 
+    function handleNovaMensagem(novaMensagem){
+        const mensagem = {
+            id: listaDeMensagens.length + 1,
+            de: 'AndreCordeir0',
+            texto: novaMensagem,
+        };
+
+
+        setListaDeMensagens([
+            ...listaDeMensagens,
+            mensagem
+        ]);
+        setMensagem('')  }
+
     return (
      
         <Box
@@ -46,8 +61,12 @@ export default function ChatPage() {
                     }}
                 >
 
-                    {/* <MessageList mensagens={[]} /> */}
-
+                 <MessageList mensagens={listaDeMensagens}/>
+{/*listaDeMensagens.map((mensagemAtual)=>{
+return(
+<li>{mensagemAtual}</li>
+)
+})*/}
                     <Box
                         as="form"
                         styleSheet={{
@@ -56,10 +75,24 @@ export default function ChatPage() {
                         }}
                     >
                         <TextField
+                        value={mensagem}
+                        onChange={(event)=>{
+                            const valor = event.target.value
+                            setMensagem(valor);
+                        }}
+                        onKeyPress={(event)=>{
+                            if(event.key ==='Enter'){
+                                event.preventDefault();
+                                
+                              handleNovaMensagem(mensagem);
+                                
+                            }
+                        }}
                             placeholder="Insira sua mensagem aqui..."
                             type="textarea"
                             styleSheet={{
-                                width: '100%',
+                                width: '90%',
+                               
                                 border: '0',
                                 resize: 'none',
                                 borderRadius: '5px',
@@ -97,65 +130,104 @@ function Header() {
 }
 
 function MessageList(props) {
-    console.log('MessageList', props);
+    console.log(props.listaDeMensagens);
     return (
     
       
         <Box
             tag="ul"
             styleSheet={{
-                overflow: 'scroll',
+                overflow: 'auto',
+                overflowX:'hidden',
                 display: 'flex',
-                flexDirection: 'column-reverse',
+                flexDirection: 'column',
                 flex: 1,
                 color: appConfig.theme.colors.neutrals["000"],
                 marginBottom: '16px',
             }}
         >
+  {props.mensagens.map((mensagem) => {
 
-            <Text
-                key={mensagem.id}
-                tag="li"
+      return( <Text
+        key={mensagem.id}
+        tag="li"
+        styleSheet={{
+            
+            borderRadius: '5px',
+            padding: '6px',
+            marginBottom: '12px',
+            hover: {
+                backgroundColor: appConfig.theme.colors.neutrals[700],
+            }
+        }}
+    >
+        <Box
+            styleSheet={{
+                marginBottom: '1px',
+            }}
+        >
+            <Image
                 styleSheet={{
-                    borderRadius: '5px',
-                    padding: '6px',
-                    marginBottom: '12px',
-                    hover: {
-                        backgroundColor: appConfig.theme.colors.neutrals[700],
-                    }
+                    width: '20px',
+                    height: '20px',
+                    borderRadius: '50%',
+                    display: 'inline-block',
+                    marginRight: '8px',
                 }}
-            >
-                <Box
-                    styleSheet={{
-                        marginBottom: '8px',
-                    }}
-                >
-                    <Image
-                        styleSheet={{
-                            width: '20px',
-                            height: '20px',
-                            borderRadius: '50%',
-                            display: 'inline-block',
-                            marginRight: '8px',
-                        }}
-                        src={`https://github.com/vanessametonini.png`}
-                    />
-                    <Text tag="strong">
-                        {mensagem.de}
-                    </Text>
-                    <Text
-                        styleSheet={{
-                            fontSize: '10px',
-                            marginLeft: '8px',
-                            color: appConfig.theme.colors.neutrals[300],
-                        }}
-                        tag="span"
-                    >
-                        {(new Date().toLocaleDateString())}
-                    </Text>
-                </Box>
-                {mensagem.texto}
+                src={`https://github.com/AndreCordeir0.png`}
+            />
+            <Text tag="strong"  styleSheet={{
+                 position:'relative',
+                 top:'-19px',
+                 paddingRight:'12px',
+                 left:'25px',
+                }}>
+                {mensagem.de}
             </Text>
+            <Text
+                styleSheet={{
+                    fontSize: '10px',
+                    marginLeft: '138px',
+                    color: appConfig.theme.colors.neutrals[300],
+                    position:'relative',
+                    top:'-13px',
+                    left:'-135px',
+                }}
+                tag="span"
+            >
+                {(new Date().toLocaleDateString())}
+            </Text>
+        </Box>
+        {mensagem.texto}
+    </Text>)
+  }
+)}
+
+      <button 
+      onClick={()=>handleNovaMensagem(mensagem)}
+
+       onKeyPress={(event)=>{
+        if(event.key ==='Enter'){
+            event.preventDefault();
+            
+          handleNovaMensagem(mensagem);
+            
+        }
+    }}
+       style={{
+                    width: '120px',
+                    height: '40px',
+                    borderRadius:'4px',
+                    outline:'none',
+                    border:'none',background:'green',
+                    position:'absolute',
+                    top:'425px',
+                    left:'1060px',
+                    cursor:'pointer',
+                    hover: {
+                        backgroundColor: appConfig.theme.colors.neutrals[400],
+                    }
+                }}>Enviar</button>
         </Box>
       
     )
