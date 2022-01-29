@@ -111,7 +111,7 @@ const roteamento = useRouter();
             as="form"
             onSubmit={function(event){
             event.preventDefault();
-            roteamento.push('chat')
+            roteamento.push(`/chat?username=${username}`)
             console.log('Alguem tentou entrar');
             }}
             styleSheet={{

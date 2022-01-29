@@ -2,17 +2,22 @@ import { Box, Text, TextField, Image, Button } from '@skynexui/components';
 import React, { useState } from 'react';
 import appConfig from '../config.json';
 import { createClient } from '@supabase/supabase-js';
-
+import {useRouter} from 'next/router';
+import { ButtonSendSticker} from '../src/components/ButtonSendSticker.js';
 const SUPABASE_ANON_KEY ='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzM5OTMyNCwiZXhwIjoxOTU4OTc1MzI0fQ.QfjvJuWQeiEPir5gWC3yYhk9Mf4vZ80Rp3J4Qx8WUCk'
     const SUPABASE_URL='https://mrdvhttmouaubjuzimkm.supabase.co';
     const supabase_Client = createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 
-    
+   
+
+
+
 export default function ChatPage() {
     const [mensagem,setMensagem]= React.useState('');
     const [listaDeMensagens,setListaDeMensagens]=React.useState([]);
    
-    
+    const roteamento = useRouter();
+    const usuarioLogado = roteamento.query.username;
 
 
     React.useEffect(()=>
@@ -31,7 +36,7 @@ setListaDeMensagens(data)
     function handleNovaMensagem(novaMensagem){
         const mensagem = {
            // id: listaDeMensagens.length + 1,
-            de: 'AndreCordeir0',
+            de: usuarioLogado,
             texto: novaMensagem,
         };
 
@@ -130,6 +135,7 @@ return(
                                 color: appConfig.theme.colors.neutrals[200],
                             }}
                         />
+                        <ButtonSendSticker/>
                     </Box>
                 </Box>
             </Box>
@@ -231,31 +237,7 @@ function MessageList(props) {
   }
 )}
 
-      <button 
-      onClick={()=>handleNovaMensagem(mensagem)}
-
-       onKeyPress={(event)=>{
-        if(event.key ==='Enter'){
-            event.preventDefault();
-            
-          handleNovaMensagem(mensagem);
-            
-        }
-    }}
-       style={{
-                    width: '120px',
-                    height: '40px',
-                    borderRadius:'4px',
-                    outline:'none',
-                    border:'none',background:'green',
-                    position:'absolute',
-                    top:'425px',
-                    left:'1060px',
-                    cursor:'pointer',
-                    hover: {
-                        backgroundColor: appConfig.theme.colors.neutrals[400],
-                    }
-                }}>Enviar</button>
+     
         </Box>
       
     )
