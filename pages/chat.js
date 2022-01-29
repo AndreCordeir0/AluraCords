@@ -19,8 +19,16 @@ export default function ChatPage() {
     const roteamento = useRouter();
     const usuarioLogado = roteamento.query.username;
 
+    function escutaMensagensEmTempoReal(adicionaMensagem) {
+        return supabase_Client
+            .from('mensagem')
+            .on('INSERT', (respostaLive) => {
+                adicionaMensagem(respostaLive.new);
+            })
+            .subscribe();
+    }
 
-    React.useEffect(()=>
+    React.useEffect(()=>{
    supabase_Client
     .from('mensagens')
     .select('*')
@@ -29,7 +37,26 @@ export default function ChatPage() {
 setListaDeMensagens(data)
 })
 
-    ,[]);
+const subscription = escutaMensagensEmTempoReal((novaMensagem) => {
+    console.log('Nova mensagem:', novaMensagem);
+    console.log('listaDeMensagens:', listaDeMensagens);
+  
+    setListaDeMensagens((valorAtualDaLista) => {
+      console.log('valorAtualDaLista:', valorAtualDaLista);
+      return [
+        novaMensagem,
+        ...valorAtualDaLista
+      ]
+    });
+  });
+
+  return () => {
+    subscription.unsubscribe();
+  }
+}, []);
+
+
+
    
 
 
@@ -135,7 +162,12 @@ return(
                                 color: appConfig.theme.colors.neutrals[200],
                             }}
                         />
-                        <ButtonSendSticker/>
+                          <ButtonSendSticker
+                            onStickerClick={(sticker) => {
+                                // console.log('[usando o componente] salva esse sticker no banco', sticker)
+                                handleNovaMensagem(':sticker: ' + sticker)
+                            }}
+                        />
                     </Box>
                 </Box>
             </Box>
@@ -232,7 +264,24 @@ function MessageList(props) {
                 {(new Date().toLocaleDateString())}
             </Text>
         </Box>
-        {mensagem.texto}
+        {mensagem.texto.startsWith(':sticker:')
+                            ? (
+                                <Image
+                                    styleSheet={{
+                                        width: '150px',
+                                    }}
+                                    src={mensagem.texto.replace(':sticker:', '')} />
+                            )
+                            : (
+                                <Text
+                                    styleSheet={{
+                                        hover: {
+                                            borderBottom: 'none',
+                                        }
+                                    }}>
+                                    {mensagem.texto}
+                                </Text>
+                            )}
     </Text>)
   }
 )}
