@@ -28,7 +28,7 @@ export function ButtonSendSticker(props) {
           margin:'5px',
           hover: {
             filter: 'grayscale(0)',
-            boxShadow: ' 0 0 2em rgb( 223, 184, 122)',
+            
           }
         }}
         buttonColors={{

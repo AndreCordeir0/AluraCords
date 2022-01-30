@@ -57,7 +57,9 @@ const subscription = escutaMensagensEmTempoReal((novaMensagem) => {
 
 
 
-   
+   function deleteMessage(){
+       
+   }
 
 
     function handleNovaMensagem(novaMensagem){
@@ -87,9 +89,9 @@ const subscription = escutaMensagensEmTempoReal((novaMensagem) => {
         <Box
             styleSheet={{
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                backgroundColor: appConfig.theme.colors.primary[500],
-                backgroundImage: `url(https://virtualbackgrounds.site/wp-content/uploads/2020/08/the-matrix-digital-rain.jpg)`,
-                backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundBlendMode: 'multiply',
+                
+                backgroundImage: `url(https://images.alphacoders.com/699/thumb-1920-699287.jpg)`,
+                backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundBlendMode: 'multiply',filter:'brightness(1.3)',
                 color: appConfig.theme.colors.neutrals['000']
             }}
         >
@@ -100,7 +102,7 @@ const subscription = escutaMensagensEmTempoReal((novaMensagem) => {
                     flex: 1,
                     boxShadow: '0 2px 10px 0 rgb(0 0 0 / 20%)',
                     borderRadius: '5px',
-                    backgroundColor: appConfig.theme.colors.neutrals[700],
+                    backgroundColor: appConfig.theme.colors.primary.backgrounduser,
                     height: '100%',
                     maxWidth: '95%',
                     maxHeight: '95vh',
@@ -114,10 +116,11 @@ const subscription = escutaMensagensEmTempoReal((novaMensagem) => {
                         display: 'flex',
                         flex: 1,
                         height: '80%',
-                        backgroundColor: appConfig.theme.colors.neutrals[600],
+                        backgroundColor: appConfig.theme.colors.primary.mybackground,
                         flexDirection: 'column',
                         borderRadius: '5px',
                         padding: '16px',
+                      
                     }}
                 >
 
@@ -137,6 +140,7 @@ return(
                         <TextField
                         value={mensagem}
                         onChange={(event)=>{
+                            
                             const valor = event.target.value
                             setMensagem(valor);
                         }}
@@ -223,7 +227,7 @@ function MessageList(props) {
             padding: '6px',
             marginBottom: '12px',
             hover: {
-                backgroundColor: appConfig.theme.colors.neutrals[700],
+                backgroundColor: appConfig.theme.colors.primary.mybackgroundhover,
             }
         }}
     >
